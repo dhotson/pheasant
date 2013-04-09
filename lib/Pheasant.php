@@ -68,8 +68,9 @@ class Pheasant
             $this->_schema[$class] = $schema;
 
             if ($this->_devMode) {
+                $obj = new $class;
                 $migrator = new \Pheasant\Migrate\Migrator();
-                $migrator->create($subject->tableName(), $this->_schema[$class]);
+                $migrator->create($obj->tableName(), $this->_schema[$class]);
             }
         }
 
