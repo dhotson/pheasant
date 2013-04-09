@@ -11,6 +11,7 @@ class Pheasant
     private $_finders=array();
     private $_mappers=array();
     private $_events;
+    private $_devMode;
 
     private static $_instance;
 
@@ -65,6 +66,11 @@ class Pheasant
 
             $this->events()->trigger('afterInitialize', $schema);
             $this->_schema[$class] = $schema;
+
+            if ($this->_devMode) {
+                $migrator = new \Pheasant\Migrate\Migrator();
+                $migrator->create($subject->tableName(), $this->_schema[$class]);
+            }
         }
 
         return $class;
@@ -151,6 +157,12 @@ class Pheasant
         }
 
         return $this->_events;
+    }
+
+    public function devMode()
+    {
+        $this->_devMode = true;
+        return $this;
     }
 
     // ----------------------------------------
