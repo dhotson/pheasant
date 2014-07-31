@@ -5,7 +5,7 @@ namespace Pheasant\Database\Mysqli;
 class ResultIterator implements \SeekableIterator, \Countable
 {
     private $_result;
-    private $_position;
+    private $_position = 0;
     private $_currentRow;
     private $_hydrator;
 
@@ -67,7 +67,9 @@ class ResultIterator implements \SeekableIterator, \Countable
     */
     public function current()
     {
-        return $this->_currentRow;
+        return $this->_currentRow
+            ? $this->_currentRow
+            : ($this->_currentRow = $this->_fetch());
     }
 
     /**
